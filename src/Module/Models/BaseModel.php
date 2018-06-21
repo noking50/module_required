@@ -3,7 +3,7 @@
 namespace Noking50\Modules\Required\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Noking50\Pagination\Pagination;
+use Pagination;
 
 abstract class BaseModel extends Model {
     ## Scope
