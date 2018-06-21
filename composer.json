@@ -1,0 +1,30 @@
+{
+    "name": "noking50/module_required",
+    "description": "Module require files",
+    "keywords": ["laravel"],
+    "authors": [
+        {
+            "name": "noking50",
+            "email": "noking50@gmail.com"
+        }
+    ],
+    "require": {
+        "noking50/sitemap": "^1.0",
+        "noking50/user": "^1.0",
+        "noking50/pagination": "^1.0",
+        "noking50/fileupload": "^1.0",
+        "noking50/dblog": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Noking50\\Modules\\Required\\": "src/Module"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Noking50\\Modules\\Required\\ModuleRequiredServiceProvider"
+            ]
+        }
+    }
+}
