@@ -39,7 +39,6 @@ abstract class BaseValidation {
         foreach ($sometimes as $v) {
             $validator->sometimes($v[0], $v[1], $v[2]);
         }
-        $validator->setAttributeNames($v);
 
         if ($validator->fails()) {
             throw new ValidateException($validator->errors());
