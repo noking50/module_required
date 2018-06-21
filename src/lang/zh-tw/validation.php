@@ -9,6 +9,7 @@ return [
         'update_member_admin_id' => '更新人員',
         'status' => '狀態',
         'order' => '排序',
+        'lang' => '多語言',
     ],
 ];
 ?>
