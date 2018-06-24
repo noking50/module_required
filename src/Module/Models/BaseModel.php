@@ -2,6 +2,7 @@
 
 namespace Noking50\Modules\Required\Models;
 
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Model;
 use Pagination;
 
