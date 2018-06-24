@@ -50,13 +50,19 @@ abstract class BaseModel extends Model {
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeSelectCreatorAdmin($query) {
-        $user_table = config('user.group.admin.datatable');
-        $query->addSelect([
-                    "{$this->table}.create_{$user_table}_id'",
-                    "create_{$user_table}.name AS create_{$user_table}_name",
-                ])
-                ->leftJoin("{$user_table} AS create_{$user_table}", $this->table . ".create_{$user_table}_id", '=', "create_{$user_table}.id");
-
+        $user_table = config('user.group.admin.datatable', '');
+        if (Schema::hasTable($user_table)) {
+            $query->addSelect([
+                        "{$this->table}.create_{$user_table}_id",
+                        "create_{$user_table}.name AS create_{$user_table}_name",
+                    ])
+                    ->leftJoin("{$user_table} AS create_{$user_table}", $this->table . ".create_{$user_table}_id", '=', "create_{$user_table}.id");
+        } else {
+            $query->addSelect([
+                "{$this->table}.create_{$user_table}_id'",
+                DB::raw(" NULL AS create_{$user_table}_name "),
+            ]);
+        }
         return $query;
     }
 
@@ -66,12 +72,19 @@ abstract class BaseModel extends Model {
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeSelectUpdaterAdmin($query) {
-        $user_table = config('user.group.admin.datatable');
-        $query->addSelect([
-                    "{$this->table}.update_{$user_table}_id'",
-                    "update_{$user_table}.name AS update_{$user_table}_name",
-                ])
-                ->leftJoin("{$user_table} AS update_{$user_table}", $this->table . ".update_{$user_table}_id", '=', "update_{$user_table}.id");
+        $user_table = config('user.group.admin.datatable', '');
+        if (Schema::hasTable($user_table)) {
+            $query->addSelect([
+                        "{$this->table}.update_{$user_table}_id",
+                        "update_{$user_table}.name AS update_{$user_table}_name",
+                    ])
+                    ->leftJoin("{$user_table} AS update_{$user_table}", $this->table . ".update_{$user_table}_id", '=', "update_{$user_table}.id");
+        } else {
+            $query->addSelect([
+                "{$this->table}.update_{$user_table}_id",
+                DB::raw(" NULL AS update_{$user_table}_name "),
+            ]);
+        }
 
         return $query;
     }
