@@ -31,10 +31,10 @@ class ZipHtmlService {
             $zip->extractTo($path_extract);
             $zip->close();
         }
-        if (!File::exists($path_extract . DIRECTORY_SEPARATOR . $v['name'])) {
+        if (!File::exists($path_extract . DIRECTORY_SEPARATOR . $fileinfo['name'])) {
             throw new ZipHtmlException(trans('module_required::exception.zip_html.file_dir'));
         }
-        if (!File::exists($path_extract . DIRECTORY_SEPARATOR . $v['name'] . DIRECTORY_SEPARATOR . 'index.html')) {
+        if (!File::exists($path_extract . DIRECTORY_SEPARATOR . $fileinfo['name'] . DIRECTORY_SEPARATOR . 'index.html')) {
             throw new ZipHtmlException(trans('module_required::exception.zip_html.file_index'));
         }
     }
@@ -59,7 +59,7 @@ class ZipHtmlService {
     public function deleteUploadSource($fileinfo) {
         $path_src = FileUpload::getRootDirTmp() . $fileinfo['dir'] . DIRECTORY_SEPARATOR . $fileinfo['id'] . '.' . $fileinfo['ext'];
         if (File::exists($path_src)) {
-            File::deleteDirectory($path_src);
+            File::delete($path_src);
         }
     }
 
