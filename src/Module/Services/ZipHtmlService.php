@@ -9,14 +9,10 @@ use ZipArchive;
 
 class ZipHtmlService {
 
-    protected $baseHtmlPath;
+    protected $baseDir;
 
     public function __construct() {
-        $this->baseHtmlPath = rtrim(public_path('html'), DIRECTORY_SEPARATOR);
-    }
-
-    public function getBasePath() {
-        return $this->baseHtmlPath;
+        $this->baseDir = 'html';
     }
 
     public function extract($fileinfo) {
@@ -41,7 +37,7 @@ class ZipHtmlService {
 
     public function move($fileinfo, $html_dir) {
         $path_src = FileUpload::getRootDirTmp() . $fileinfo['dir'] . DIRECTORY_SEPARATOR . $fileinfo['id'] . DIRECTORY_SEPARATOR . $fileinfo['name'];
-        $path_dest = $this->baseHtmlPath . DIRECTORY_SEPARATOR . trim($html_dir, DIRECTORY_SEPARATOR);
+        $path_dest = $this->getHtmlBasePath() . DIRECTORY_SEPARATOR . trim($html_dir, DIRECTORY_SEPARATOR);
         if (File::exists($path_dest)) {
             File::deleteDirectory($path_dest);
         }
@@ -64,8 +60,18 @@ class ZipHtmlService {
     }
 
     public function htmlExist($html_dir) {
-        $path_dest = $this->baseHtmlPath . DIRECTORY_SEPARATOR . trim($html_dir, DIRECTORY_SEPARATOR);
+        $path_dest = $this->getHtmlBasePath() . DIRECTORY_SEPARATOR . trim($html_dir, DIRECTORY_SEPARATOR);
         
         return File::exists($path_dest . DIRECTORY_SEPARATOR . 'index.html');
+    }
+
+    public function getHtmlBasePath() {
+        return rtrim(public_path($this->baseDir), DIRECTORY_SEPARATOR);
+    }
+    
+    public function getHtmlUrl($html_dir) {
+        $url = asset($this->baseDir . '/' . trim($html_dir, '/') . '/index.html');
+        
+        return $url;
     }
 }
