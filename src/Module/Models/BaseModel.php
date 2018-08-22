@@ -16,9 +16,21 @@ abstract class BaseModel extends Model {
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeSetPagination($query) {
-        $total_count = $query->cloneWithout(['columns', 'orders', 'limit', 'offset'])
-                ->cloneWithoutBindings(['select', 'order'])
-                ->count();
+        $tmp_query = tap(clone $query, function ($clone) {
+            foreach (['columns', 'orders', 'limit', 'offset'] as $property) {
+                $clone->{$property} = null;
+            }
+        });
+        $tmp_query = tap(clone $tmp_query, function ($clone) {
+            foreach (['select', 'order'] as $type) {
+                $clone->bindings[$type] = [];
+            }
+        });
+        $total_count = $tmp_query->count();
+
+//        $total_count = $query->cloneWithout(['columns', 'orders', 'limit', 'offset'])
+//                ->cloneWithoutBindings(['select', 'order'])
+//                ->count();
         $paging['total'] = $total_count;
         Pagination::setPagination($paging);
 
